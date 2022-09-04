@@ -1,0 +1,22 @@
+﻿<vertical spacing="7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
+	<horizontal bg="panel-top" bg-color="teal" pref-width="90" pref-height="12" horizontal-fit="PreferredSize">
+		<text font-size="10" text="History/Info" align="Center"/>
+	</horizontal>
+	<vertical spacing="1">
+	</vertical>
+	    <horizontal pref-width="60">
+      <text font-size="3.3" text="
+      The clock was originally made by &lt;color=#73a5f5&gt;taz030485&lt;/color&gt; in 2018 in a mod called Beat Saber Tweaks. Taz stopped modding at the beginning of 2019 and Megalon took over the mod. Eventually the mod was dissolved and its most useful features were then put into Enhancements by &lt;color=#73a5f5&gt;Auros&lt;/color&gt; with more features. Then I wanted only the clock and volume functionality of the mod so I made Clock and Volume." />
+    </horizontal>
+    <horizontal pref-width="60">
+		<vertical>
+			<text text="Changes from Enhancements by &lt;color=#73a5f5&gt;Auros&lt;/color&gt;" align="Center" font-size="7"/>
+		</vertical>
+	    </horizontal>
+	<horizontal pref-width="60">
+      <text font-size="3.3" text="
+			   Removed everything but the Clock and Volume Adjustments. Removed Fonts from the clock. Combined the UI into a single one. Also, can't forget, I added a reset button for the color. The intent of this was to make a simpler version of Enhancements that has less chance of breaking with a game update. This was also my first ever modding project and I learned alot by simply removing/moving code." />
+	</horizontal>
+	<vertical spacing="3">
+	</vertical>
+</vertical>

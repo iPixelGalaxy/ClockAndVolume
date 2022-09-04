@@ -1,0 +1,38 @@
+﻿<vertical vertical-fit="PreferredSize" spacing="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
+  <horizontal bg="panel-top" bg-color="orange" pref-width="160" pref-height="12" horizontal-fit="PreferredSize">
+	<text text="Clock Settings" align="Center" font-size="10" />
+  </horizontal>
+	<horizontal>
+		<vertical bg="round-rect-panel" pad="3" pref-width="60">
+				<text text="In-Menu" align="Center" font-size="4" underlined="true" />
+				<text text="Position" align="Center" font-size="6" underlined="true" />
+				<increment-setting text="X" value="pos-x" apply-on-change="true" min="-10" max="10" increment="0.05"/>
+				<increment-setting text="Y" value="pos-y" apply-on-change="true" min="-2" max="5" increment="0.05"/>
+				<increment-setting text="Z" value="pos-z" apply-on-change="true" min="-10" max="10" increment="0.05"/>
+				<text text="Rotation" align="Center" font-size="6" underlined="true" />
+				<increment-setting text="X" value="rot-x" apply-on-change="true" min="0" max="360" increment="15"/>
+				<increment-setting text="Y" value="rot-y" apply-on-change="true" min="0" max="360" increment="15"/>
+				<increment-setting text="Z" value="rot-z" apply-on-change="true" min="0" max="360" increment="15"/>
+		</vertical>
+		<vertical bg="round-rect-panel" pad="3" pref-width="60">
+			<bool-setting text="Enabled" value="enabled" apply-on-change="true" />
+			<bool-setting text="Show In Game" value="show-ingame" apply-on-change="true" />
+			<increment-setting text="Size" min="1" max="20" integer-only="true" value="size" apply-on-change="true" />
+			<dropdown-list-setting id="dropdown" options="format-options" text="Format" value="format" formatter="formatter-formatter" apply-on-change="true" />
+			<slider-setting text="Opacity" value="opacity" apply-on-change="true" increment="0.1" min="0" max="1" />
+			<color-setting value="color" text="Color" bind-value="true" apply-on-change="true"/>
+			<button text="Reset Color" on-click="ResetClockColor"/>
+		</vertical>
+		<vertical bg="round-rect-panel" pad="3" pref-width="60">
+			<text text="In-Game" align="Center" font-size="4" underlined="true" />
+			<text text="Position" align="Center" font-size="6" underlined="true" />
+			<increment-setting text="X" value="pos-x-game" apply-on-change="true" min="-10" max="10" increment="0.05"/>
+			<increment-setting text="Y" value="pos-y-game" apply-on-change="true" min="-2" max="5" increment="0.05"/>
+			<increment-setting text="Z" value="pos-z-game" apply-on-change="true" min="-10" max="10" increment="0.05"/>
+			<text text="Rotation" align="Center" font-size="6" underlined="true" />
+			<increment-setting text="X" value="rot-x-game" apply-on-change="true" min="0" max="360" increment="15"/>
+			<increment-setting text="Y" value="rot-y-game" apply-on-change="true" min="0" max="360" increment="15"/>
+			<increment-setting text="Z" value="rot-z-game" apply-on-change="true" min="0" max="360" increment="15"/>
+		</vertical>
+  </horizontal>
+</vertical>
