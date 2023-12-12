@@ -5,7 +5,7 @@ Adds various extra features into Beat Saber like a clock and volume adjustment!
 * Clock: Customizable clock!
 * Volume Assistant: Change specific volumes in the game (fireworks volume, menu music volume, hit sound volume, etc)
 
-Some Additions:
+Some Additions (of this fork):
 - Reset Color button for the clock!
 - In-Game different positions. (This is a scuffed implementation where you don't get to see a preview, but trust me bro, it works)
 
