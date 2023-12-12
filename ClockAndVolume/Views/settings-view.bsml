@@ -1,0 +1,140 @@
+﻿<vertical child-control-height='false' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='- https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+
+		<tab-selector tab-tag='tabs'/>
+	<horizontal preferred-width='122' preferred-height='65' pad-top='10'>
+		<tab tab-name='In-Menu' tags='tabs'>
+			<horizontal pad-bottom='7'>
+				<vertical>
+					<horizontal bg="panel-top" bg-color="orange" pref-width="120" pref-height="12" horizontal-fit="PreferredSize">
+						<text text="Clock Settings" align="Center" font-size="10" />
+					</horizontal>
+					<horizontal preferred-height='60' pad-top='0'>
+						<vertical bg="round-rect-panel" pad="3" pref-width="60">
+							<bool-setting text="Enabled" value="enabled" apply-on-change="true" />
+							<bool-setting text="Show In Game" value="show-ingame" apply-on-change="true" />
+							<increment-setting text="Size" min="1" max="20" integer-only="true" value="size" apply-on-change="true" />
+							<dropdown-list-setting id="dropdown" options="format-options" text="Format" value="format" formatter="formatter-formatter" apply-on-change="true" />
+							<slider-setting text="Opacity" value="opacity" apply-on-change="true" increment="0.1" min="0" max="1" />
+							<color-setting value="color" text="Color" bind-value="true" apply-on-change="true"/>
+							<button text="Reset Color" on-click="ResetClockColor"/>
+						</vertical>
+						<vertical bg="round-rect-panel" pad="7" pref-width="60" pad-top='0'>
+							<text text="In-Menu" align="Center" font-size="7" underlined="true" />
+							<vertical>
+								<horizontal pad-left="6">
+									<text text="Position" font-size="3" underlined="true"/>
+								</horizontal>
+							</vertical>
+							<increment-setting text="X" value="pos-x" apply-on-change="true" min="-10" max="10" increment="0.05"/>
+							<increment-setting text="Y" value="pos-y" apply-on-change="true" min="-2" max="5" increment="0.05"/>
+							<increment-setting text="Z" value="pos-z" apply-on-change="true" min="-10" max="10" increment="0.05"/>
+							<vertical>
+								<horizontal pad-left="6">
+									<text text="Rotation" align="Center" font-size="3" underlined="true" />
+								</horizontal>
+							</vertical>
+							<increment-setting text="X" value="rot-x" apply-on-change="true" min="0" max="360" increment="15"/>
+							<increment-setting text="Y" value="rot-y" apply-on-change="true" min="0" max="360" increment="15"/>
+							<increment-setting text="Z" value="rot-z" apply-on-change="true" min="0" max="360" increment="15"/>
+						</vertical>
+					</horizontal>
+				</vertical>
+			</horizontal>
+		</tab>
+		<tab tab-name='In-Game' tags='tabs'>
+			<horizontal pad-bottom='7'>
+				<vertical>
+					<horizontal bg="panel-top" bg-color="orange" pref-width="120" pref-height="12" horizontal-fit="PreferredSize">
+						<text text="Clock Settings" align="Center" font-size="10" />
+					</horizontal>
+					<horizontal preferred-height='60' pad-top='0'>
+						<vertical bg="round-rect-panel" pad="3" pref-width="60">
+							<bool-setting text="Enabled" value="enabled" apply-on-change="true" />
+							<bool-setting text="Show In Game" value="show-ingame" apply-on-change="true" />
+							<increment-setting text="Size" min="1" max="20" integer-only="true" value="size" apply-on-change="true" />
+							<dropdown-list-setting id="dropdown" options="format-options" text="Format" value="format" formatter="formatter-formatter" apply-on-change="true" />
+							<slider-setting text="Opacity" value="opacity" apply-on-change="true" increment="0.1" min="0" max="1" />
+							<color-setting value="color" text="Color" bind-value="true" apply-on-change="true"/>
+							<button text="Reset Color" on-click="ResetClockColor"/>
+						</vertical>
+						<vertical bg="round-rect-panel" pad="7" pref-width="60" pad-top='0'>
+							<text text="In-Game" align="Center" font-size="7" underlined="true" />
+							<vertical>
+								<horizontal pad-left="6">
+									<text text="Position" font-size="3" underlined="true"/>
+								</horizontal>
+							</vertical>
+							<increment-setting text="X" value="pos-x-game" apply-on-change="true" min="-10" max="10" increment="0.05"/>
+							<increment-setting text="Y" value="pos-y-game" apply-on-change="true" min="-2" max="5" increment="0.05"/>
+							<increment-setting text="Z" value="pos-z-game" apply-on-change="true" min="-10" max="10" increment="0.05"/>
+							<vertical>
+								<horizontal pad-left="6">
+									<text text="Rotation" align="Center" font-size="3" underlined="true" />
+								</horizontal>
+							</vertical>
+							<increment-setting text="X" value="rot-x-game" apply-on-change="true" min="0" max="360" increment="15"/>
+							<increment-setting text="Y" value="rot-y-game" apply-on-change="true" min="0" max="360" increment="15"/>
+							<increment-setting text="Z" value="rot-z-game" apply-on-change="true" min="0" max="360" increment="15"/>
+						</vertical>
+					</horizontal>
+				</vertical>
+			</horizontal>
+		</tab>
+		<tab tab-name='Volume' tags='tabs'>
+			<vertical>
+				<horizontal pad="-8">
+				<horizontal bg="panel-top" bg-color="darkblue" pref-width="120" pref-height="12" horizontal-fit="PreferredSize" >
+					<text font-size="10" text="Volumes" align="Center"/>
+				</horizontal>
+				</horizontal>
+			<horizontal>
+				<vertical pad="-5">
+					<increment-setting text="Good Cut" value="good-cut" formatter="percent" increment=".05" min="0" max="1" apply-on-change="true"/>
+					<increment-setting text="Bad Cut" value="bad-cut" formatter="percent" increment=".05" min="0" max="1" apply-on-change="true" />
+					<increment-setting text="Music" value="music" formatter="percent" increment=".05" min="0" max="1" apply-on-change="true" />
+					<increment-setting text="Song Preview" value="song-preview" formatter="percent" increment=".05" min="0" max="1" apply-on-change="true" />
+					<increment-setting text="Menu" value="background" formatter="percent" increment=".05" min="0" max="1" apply-on-change="true" />
+					<increment-setting text="Fireworks" value="fireworks" formatter="percent" increment=".05" min="0" max="1" apply-on-change="true" />
+				</vertical>
+			</horizontal>
+			</vertical>
+		</tab>
+		<tab tab-name='Credits' tags='tabs'>
+			<vertical>
+				<horizontal pad="-7">
+					<horizontal bg="panel-top" bg-color="grey" pref-width="90" pref-height="12" horizontal-fit="PreferredSize" >
+						<text font-size="10" text="Credits" align="Center"/>
+					</horizontal>
+				</horizontal>
+		<horizontal spacing="-15">
+			<vertical spacing="3">
+				<clickable-image src="ClockAndVolume.Resources.Auros.png" click-event='AurosGithub' preserve-aspect='true' pref-width='16' pref-height='16'/>
+				<clickable-image src='ClockAndVolume.Resources.iPixelGalaxy.png' click-event='PixelGithub' preserve-aspect='true' pref-width='16' pref-height='16'/>
+			</vertical>
+			<vertical>
+				<horizontal>
+					<text text='&lt;color=#73a5f5&gt;Auros&lt;/color&gt;' font-size='7'/>
+				</horizontal>
+				<horizontal>
+					<text text='Creator of Enhancements' font-size='4' />
+				</horizontal>
+				<horizontal>
+					<text text='&lt;color=#40E0D0&gt;iPixelGalaxy&lt;/color&gt;' font-size='7'/>
+				</horizontal>
+				<horizontal>
+					<text text='This Mod (Mostly removal' font-size='4' />
+				</horizontal>
+				<horizontal>
+					<text text='of code and UI redesign)' font-size='4' />
+				</horizontal>
+				<horizontal>
+					<text text="Clock And Volume v1.1.0" font-size="3" font-color="#34EBA8" align="Center"/>
+				</horizontal>
+			</vertical>
+		</horizontal>
+		<vertical spacing="3">
+		</vertical>
+				</vertical>
+		</tab>
+	</horizontal>
+</vertical>
