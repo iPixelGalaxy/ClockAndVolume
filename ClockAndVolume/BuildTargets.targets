@@ -7,7 +7,7 @@
     <BuildTargetsModified>false</BuildTargetsModified> <!--Set this to true if you edit this file to prevent automatic updates-->
   </PropertyGroup>
   <!--Build Targets-->
-  <Target Name="CheckManifest" AfterTargets="Build" Condition="'$(DisableZipRelease)' == 'True' OR '$(Configuration)' == 'Debug'">
+  <Target Name="CheckManifest" AfterTargets="Build" Condition="'$(DisableBuildTasks)' != 'True' AND ('$(DisableZipRelease)' == 'True' OR '$(Configuration)' == 'Debug')">
     <GetManifestInfo ErrorOnMismatch="False">
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
@@ -15,7 +15,7 @@
     </GetManifestInfo>
     <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
   </Target>
-  <Target Name="ZipRelease" AfterTargets="Build" Condition="'$(DisableZipRelease)' != 'True' AND '$(Configuration)' == 'Release'">
+  <Target Name="ZipRelease" AfterTargets="Build" Condition="'$(DisableBuildTasks)' != 'True' AND '$(DisableZipRelease)' != 'True' AND '$(Configuration)' == 'Release'">
     <Message Text="Zipping plugin for release." Importance="high" />
     <GetCommitHash ProjectDir="$(ProjectDir)">
       <Output TaskParameter="CommitShortHash" PropertyName="CommitShortHash" />
@@ -31,13 +31,7 @@
   </Target>
   <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(DisableCopyToPlugins)' != 'True'">
     <Error Text="Unable to copy assembly to game folder. BeatSaberDir doesn't exist: $(BeatSaberDir)" Condition="!Exists($(BeatSaberDir))"/>
-    <IsProcessRunning ProcessName="Beat Saber">
-      <Output TaskParameter="IsRunning" PropertyName="IsRunning" />
-    </IsProcessRunning>
-    <PropertyGroup Condition="'$(IsRunning)' == 'True'">
-      <PluginDir>$(BeatSaberDir)\IPA\Pending\Plugins</PluginDir>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(IsRunning)' == 'False'">
+    <PropertyGroup>
       <PluginDir>$(BeatSaberDir)\Plugins</PluginDir>
     </PropertyGroup>
     <Message Text="Copying $(OutputPath)$(AssemblyName).dll to $(PluginDir)" Importance="high" />
@@ -45,7 +39,7 @@
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(PluginDir)\$(AssemblyName).pdb" />
   </Target>
   <!--Build Tasks-->
-  <UsingTask TaskName="GetManifestInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+  <UsingTask TaskName="GetManifestInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll" Condition="'$(DisableBuildTasks)' != 'True'">
     <ParameterGroup>
       <GameVersion ParameterType="System.String" Output="true" />
       <PluginVersion ParameterType="System.String" Output="true" />
@@ -209,7 +203,7 @@
     </Task>
   </UsingTask>
   <!-- Source: https://stackoverflow.com/a/38127938 -->
-  <UsingTask TaskName="ZipDir" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+  <UsingTask TaskName="ZipDir" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll" Condition="'$(DisableBuildTasks)' != 'True'">
     <ParameterGroup>
       <DirectoryName ParameterType="System.String" Required="true" />
       <ZipFileName ParameterType="System.String" Required="true" />
@@ -253,7 +247,7 @@
       </Code>
     </Task>
   </UsingTask>
-  <UsingTask TaskName="GetCommitHash" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+  <UsingTask TaskName="GetCommitHash" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll" Condition="'$(DisableBuildTasks)' != 'True'">
     <ParameterGroup>
       <ProjectDir ParameterType="System.String" Required="true" />
       <CommitShortHash ParameterType="System.String" Output="true" />
@@ -329,7 +323,7 @@
       </Code>
     </Task>
   </UsingTask>
-  <UsingTask TaskName="IsProcessRunning" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+  <UsingTask TaskName="IsProcessRunning" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll" Condition="'$(DisableBuildTasks)' != 'True'">
     <ParameterGroup>
       <ProcessName ParameterType="System.String" Required="true" />
       <IsRunning ParameterType="System.Boolean" Output="true" />

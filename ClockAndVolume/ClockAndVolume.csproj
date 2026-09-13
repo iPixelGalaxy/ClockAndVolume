@@ -206,7 +206,7 @@
     <EmbeddedResource Include="Resources\iPixelGalaxy.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="BuildTargets.targets" Condition="'$(MSBuildRuntimeType)' != 'Core'" />
+  <Import Project="BuildTargets.targets" />
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
