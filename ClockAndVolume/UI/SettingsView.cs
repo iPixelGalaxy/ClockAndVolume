@@ -194,7 +194,6 @@ namespace ClockAndVolume.UI
         private MenuVolumeManager _menuVolume;
         private FireworksController _fireworksController;
         private FireworkItemController.Pool _fireworkPool;
-        private Sprite auros;
         private static readonly FieldAccessor<FireworksController, FireworkItemController.Pool>.Accessor FireworkPool = FieldAccessor<FireworksController, FireworkItemController.Pool>.GetAccessor("_fireworkItemPool");
 
         [UIValue("good-cut")]

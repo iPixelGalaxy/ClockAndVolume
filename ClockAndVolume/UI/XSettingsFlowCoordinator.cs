@@ -21,12 +21,12 @@ namespace ClockAndVolume.UI
 
         private SettingsView _clockSettingsView;
         private CreditsInfoView _creditsInfoView;
-        private SettingsView _volumeSettingsInfoView;
 
         [Inject]
         public void Construct(Config config, MainFlowCoordinator mainFlowCoordinator, BasicClockViewPreview basicClockViewPreview, SettingsView clockSettingsView, CreditsInfoView creditsInfoView)
         {
             _config = config;
+            _clockSettings = config.Clock;
             _mainFlowCoordinator = mainFlowCoordinator;
             _clockSettingsView = clockSettingsView;
             _creditsInfoView = creditsInfoView;
@@ -45,7 +45,7 @@ namespace ClockAndVolume.UI
             {
                 showBackButton = true;
                 SetTitle("Clock and Volume");
-                ProvideInitialViewControllers(_clockSettingsView, _volumeSettingsInfoView, _creditsInfoView);
+                ProvideInitialViewControllers(_clockSettingsView, null, _creditsInfoView);
             }
         }
 
