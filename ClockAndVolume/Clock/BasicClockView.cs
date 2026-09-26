@@ -23,6 +23,8 @@ namespace ClockAndVolume.Clock
             get => _clockText;
             set
             {
+                if (_clockText == value)
+                    return;
                 _clockText = value;
                 NotifyPropertyChanged();
             }

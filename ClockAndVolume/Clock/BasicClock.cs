@@ -12,6 +12,8 @@ namespace ClockAndVolume.Clock
     public class BasicClock : IInitializable, IDisposable
     {
         private bool _disabled;
+        private string _cultureName;
+        private CultureInfo _culture = CultureInfo.InvariantCulture;
         private XLoader _loader;
         private FloatingScreen _floatingScreen;
         private readonly ClockSettings _clockSettings;
@@ -57,10 +59,14 @@ namespace ClockAndVolume.Clock
                 _floatingScreen.gameObject.SetActive(true);
                 _disabled = false;
             }
-            CultureInfo culture = string.IsNullOrEmpty(_clockSettings.Culture) ? CultureInfo.InvariantCulture : new CultureInfo(_clockSettings.Culture);
             if (_clockSettings.Enabled)
             {
-                _basicClockView.ClockText = time.ToString(_clockSettings.Format, culture);
+                if (_cultureName != _clockSettings.Culture)
+                {
+                    _culture = string.IsNullOrEmpty(_clockSettings.Culture) ? CultureInfo.InvariantCulture : new CultureInfo(_clockSettings.Culture);
+                    _cultureName = _clockSettings.Culture;
+                }
+                _basicClockView.ClockText = time.ToString(_clockSettings.Format, _culture);
                 if (_clockSettings.IsDirty)
                 {
                     _basicClockView.ClockSize = _clockSettings.Size;
