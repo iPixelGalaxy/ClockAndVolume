@@ -5,8 +5,8 @@
 		<tab tab-name='In-Menu' tags='tabs'>
 			<horizontal pad-bottom='7'>
 				<vertical>
-					<horizontal bg="panel-top" bg-color="orange" pref-width="120" pref-height="12" horizontal-fit="PreferredSize">
-						<text text="Clock Settings" align="Center" font-size="10" />
+					<horizontal bg="panel-top" bg-color="#52ff86" pref-width="120" pref-height="13" horizontal-fit="PreferredSize" pad-top='1'>
+						<text text="Clock Settings (In-Menu)" align="Center" font-size="10" />
 					</horizontal>
 					<horizontal preferred-height='60' pad-top='0'>
 						<vertical bg="round-rect-panel" pad="3" pref-width="60">
@@ -14,7 +14,6 @@
 							<bool-setting text="Show In Game" value="show-ingame" apply-on-change="true" />
 							<increment-setting text="Size" min="1" max="20" integer-only="true" value="size" apply-on-change="true" />
 							<dropdown-list-setting id="dropdown" options="format-options" text="Format" value="format" formatter="formatter-formatter" apply-on-change="true" />
-							<slider-setting text="Opacity" value="opacity" apply-on-change="true" increment="0.1" min="0" max="1" />
 							<color-setting value="color" text="Color" bind-value="true" apply-on-change="true"/>
 							<button text="Reset Color" on-click="ResetClockColor"/>
 						</vertical>
@@ -44,8 +43,8 @@
 		<tab tab-name='In-Game' tags='tabs'>
 			<horizontal pad-bottom='7'>
 				<vertical>
-					<horizontal bg="panel-top" bg-color="orange" pref-width="120" pref-height="12" horizontal-fit="PreferredSize">
-						<text text="Clock Settings" align="Center" font-size="10" />
+					<horizontal bg="panel-top" bg-color="#ff68e4" pref-width="120" pref-height="13" horizontal-fit="PreferredSize" pad-top='1'>
+						<text text="Clock Settings (In-Game)" align="Center" font-size="10" />
 					</horizontal>
 					<horizontal preferred-height='60' pad-top='0'>
 						<vertical bg="round-rect-panel" pad="3" pref-width="60">
@@ -53,7 +52,6 @@
 							<bool-setting text="Show In Game" value="show-ingame" apply-on-change="true" />
 							<increment-setting text="Size" min="1" max="20" integer-only="true" value="size" apply-on-change="true" />
 							<dropdown-list-setting id="dropdown" options="format-options" text="Format" value="format" formatter="formatter-formatter" apply-on-change="true" />
-							<slider-setting text="Opacity" value="opacity" apply-on-change="true" increment="0.1" min="0" max="1" />
 							<color-setting value="color" text="Color" bind-value="true" apply-on-change="true"/>
 							<button text="Reset Color" on-click="ResetClockColor"/>
 						</vertical>
@@ -83,7 +81,7 @@
 		<tab tab-name='Volume' tags='tabs'>
 			<vertical>
 				<horizontal pad="-8">
-				<horizontal bg="panel-top" bg-color="darkblue" pref-width="120" pref-height="12" horizontal-fit="PreferredSize" >
+				<horizontal bg="panel-top" bg-color="#0017ff" pref-width="120" pref-height="13" horizontal-fit="PreferredSize" pad-top='1'>
 					<text font-size="10" text="Volumes" align="Center"/>
 				</horizontal>
 				</horizontal>
@@ -102,7 +100,7 @@
 		<tab tab-name='Credits' tags='tabs'>
 			<vertical>
 				<horizontal pad="-7">
-					<horizontal bg="panel-top" bg-color="grey" pref-width="90" pref-height="12" horizontal-fit="PreferredSize" >
+					<horizontal bg="panel-top" bg-color="#8e8e8e" pref-width="90" pref-height="13" horizontal-fit="PreferredSize" pad-top='1'>
 						<text font-size="10" text="Credits" align="Center"/>
 					</horizontal>
 				</horizontal>
@@ -119,16 +117,16 @@
 					<text text='Creator of Enhancements' font-size='4' />
 				</horizontal>
 				<horizontal>
+					<text text='' font-size='4' />
+				</horizontal>
+				<horizontal>
 					<text text='&lt;color=#40E0D0&gt;iPixelGalaxy&lt;/color&gt;' font-size='7'/>
 				</horizontal>
 				<horizontal>
-					<text text='This Mod (Mostly removal' font-size='4' />
+					<text text='This Mod (Mostly removal of code and UI redesign)' font-size='2' />
 				</horizontal>
 				<horizontal>
-					<text text='of code and UI redesign)' font-size='4' />
-				</horizontal>
-				<horizontal>
-					<text text="Clock And Volume v1.1.0" font-size="3" font-color="#34EBA8" align="Center"/>
+					<text text="Clock And Volume v1.1.3" font-size="3" font-color="#34EBA8" align="Center"/>
 				</horizontal>
 			</vertical>
 		</horizontal>

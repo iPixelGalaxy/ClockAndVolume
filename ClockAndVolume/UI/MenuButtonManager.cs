@@ -20,12 +20,12 @@ namespace ClockAndVolume.UI
 
 		public void Initialize()
 		{
-			MenuButtons.instance.RegisterButton(menuButton);
+			MenuButtons.Instance.RegisterButton(menuButton);
 		}
 
 		public void Dispose()
 		{
-			MenuButtons.instance.UnregisterButton(menuButton);
+			MenuButtons.Instance.UnregisterButton(menuButton);
 		}
 
 		private void SummonFlowCoordinator()
