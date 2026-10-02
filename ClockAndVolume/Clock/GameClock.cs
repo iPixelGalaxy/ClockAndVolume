@@ -2,7 +2,6 @@
 using Zenject;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Globalization;
 using BeatSaberMarkupLanguage.FloatingScreen;
 using VRUIControls;
 using IPA.Utilities;
@@ -12,8 +11,7 @@ namespace ClockAndVolume.Clock
     public class GameClock : IInitializable, IDisposable
     {
         private bool _disabled;
-        private string _cultureName;
-        private CultureInfo _culture = CultureInfo.InvariantCulture;
+        private readonly ClockTextFormatter _textFormatter;
         private XLoader _loader;
         private FloatingScreen _floatingScreen;
         private readonly ClockSettings _clockSettings;
@@ -28,6 +26,7 @@ namespace ClockAndVolume.Clock
             _basicClockView = basicClockView;
             _clockController = clockController;
             _physicsRaycasterWithCache = physicsRaycasterWithCache;
+            _textFormatter = new ClockTextFormatter(PublishClockText);
         }
 
         public void Initialize()
@@ -46,6 +45,7 @@ namespace ClockAndVolume.Clock
         public void Dispose()
         {
             _clockController.DateUpdated -= ClockController_DateUpdated;
+            _textFormatter.Dispose();
         }
 
         private void ClockController_DateUpdated(DateTime time)
@@ -61,12 +61,7 @@ namespace ClockAndVolume.Clock
             }
             if (_clockSettings.Enabled)
             {
-                if (_cultureName != _clockSettings.Culture)
-                {
-                    _culture = string.IsNullOrEmpty(_clockSettings.Culture) ? CultureInfo.InvariantCulture : new CultureInfo(_clockSettings.Culture);
-                    _cultureName = _clockSettings.Culture;
-                }
-                _basicClockView.ClockText = time.ToString(_clockSettings.Format, _culture);
+                _textFormatter.Update(time, _clockSettings.Format, _clockSettings.Culture);
                 if (_clockSettings.IsDirty)
                 {
                     _basicClockView.ClockSize = _clockSettings.Size;
@@ -79,9 +74,17 @@ namespace ClockAndVolume.Clock
             else
             {
                 _disabled = true;
+                _textFormatter.Invalidate();
                 _basicClockView.ClockText = "";
                 _floatingScreen.gameObject.SetActive(false);
             }
+        }
+
+        private void PublishClockText(string text, string format, string culture)
+        {
+            if (_clockSettings.Enabled && _clockSettings.Format == format && _clockSettings.Culture == culture
+                && _floatingScreen && _basicClockView)
+                _basicClockView.ClockText = text;
         }
     }
 }

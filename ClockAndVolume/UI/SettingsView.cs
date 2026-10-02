@@ -11,6 +11,9 @@ using UnityEngine;
 using ClockAndVolume.Volume;
 using IPA.Utilities;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using IPA.Utilities.Async;
 
 namespace ClockAndVolume.UI
 {
@@ -271,9 +274,26 @@ namespace ClockAndVolume.UI
 
         [UIAction("#PixelGithub")]
         public void PixelGithub() => OpenGithub("https://github.com/iPixelGalaxy");
-        private void OpenGithub(string url)
+        private static Task _browserLaunch = Task.CompletedTask;
+
+        private static void OpenGithub(string url)
         {
-            Process.Start(url);
+            _browserLaunch = _browserLaunch.ContinueWith(LaunchBrowser, url, CancellationToken.None,
+                TaskContinuationOptions.None, TaskScheduler.Default);
+            _browserLaunch.ContinueWith(ReportBrowserFailure, CancellationToken.None,
+                TaskContinuationOptions.OnlyOnFaulted, UnityMainThreadTaskScheduler.Default);
+        }
+
+        private static void LaunchBrowser(Task previous, object state)
+        {
+            using (Process process = Process.Start((string)state))
+            {
+            }
+        }
+
+        private static void ReportBrowserFailure(Task task)
+        {
+            Plugin.Log.Error($"Unable to open browser: {task.Exception.GetBaseException()}");
         }
     }
 }
