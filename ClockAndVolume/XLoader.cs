@@ -16,17 +16,10 @@ namespace ClockAndVolume
 
         public void Initialize()
         {
-            if (!File.Exists(Path.Combine(UnityGame.UserDataPath, "ClockAndVolume.json")))
-            {
-                if (!File.Exists(Path.Combine(UnityGame.UserDataPath, "Enhancements.json")))
-                {
-                    //make config, idk how you have it set up
-                }
-                else
-                {
-                    File.Copy(Path.Combine(UnityGame.UserDataPath, "Enhancements.json"), Path.Combine(UnityGame.UserDataPath, "ClockAndVolume.json"));
-                }
-            }
+            string userDataPath = UnityGame.UserDataPath;
+            LegacyConfigFileWorker.Migrate(
+                Path.Combine(userDataPath, "ClockAndVolume.json"),
+                Path.Combine(userDataPath, "Enhancements.json"));
         }
 
         public string[] GetFontNames()
