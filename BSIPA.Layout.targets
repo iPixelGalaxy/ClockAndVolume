@@ -34,6 +34,12 @@
   </ItemGroup>
   </Target>
   <ItemGroup>
+    <PackageReference Update="BeatSaberModdingTools.Tasks;BeatSaberModdingTools.Tasks.Luna;LunaBSMod.Tasks;BSIPA.AssemblyPublicizer.MSBuild">
+      <IncludeAssets>build;buildTransitive;contentFiles;analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <_BSIPALayoutAssembly Include="$(_BSIPAMods)\**\*.dll;$(_BSIPAPending)\**\*.dll"
                           Exclude="$(_BSIPAMods)\.compatibility\**;$(_BSIPAMods)\Libraries\Native\**;$(_BSIPAPending)\.installing\**;$(_BSIPAPending)\Libraries\Native\**" />
     <_BSIPALayoutDirectory Include="@(_BSIPALayoutAssembly->'%(RootDir)%(Directory)')" KeepDuplicates="false" />
@@ -45,10 +51,14 @@
 
   <Target Name="BSIPA_ResolveLayoutReferences" BeforeTargets="ResolveAssemblyReferences">
     <PropertyGroup>
+      <TargetFrameworkDirectory Condition="'$(EnableFrameworkPathOverride)' == 'true'">$(FrameworkPathOverride)</TargetFrameworkDirectory>
+      <TargetFrameworkDirectories Condition="'$(EnableFrameworkPathOverride)' == 'true'">$(FrameworkPathOverride)</TargetFrameworkDirectories>
       <DefineConstants>$(DefineConstants);BSIPA_MODS</DefineConstants>
       <DefineConstants Condition="'$(GameVersion)' == '1.45.3'">$(DefineConstants);BEAT_SABER_1453</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
+      <Reference Include="netstandard" HintPath="$(_BSIPARoot)\Beat Saber_Data\Managed\netstandard.dll" Private="false"
+                 Condition="Exists('$(_BSIPARoot)\Beat Saber_Data\Managed\netstandard.dll') AND ! $([System.String]::Copy('@(Reference)').Contains('netstandard'))" />
       <Reference Update="@(Reference)">
         <_BSIPAFile Condition="'%(Reference.HintPath)' != ''">$([System.IO.Path]::GetFileName('%(Reference.HintPath)'))</_BSIPAFile>
         <_BSIPAFile Condition="'%(Reference.HintPath)' == ''">%(Reference.Identity).dll</_BSIPAFile>
