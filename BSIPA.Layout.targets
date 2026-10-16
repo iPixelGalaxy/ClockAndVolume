@@ -58,7 +58,7 @@
     </PropertyGroup>
     <ItemGroup>
       <Reference Include="netstandard" HintPath="$(_BSIPARoot)\Beat Saber_Data\Managed\netstandard.dll" Private="false"
-                 Condition="Exists('$(_BSIPARoot)\Beat Saber_Data\Managed\netstandard.dll') AND ! $([System.String]::Copy('@(Reference)').Contains('netstandard'))" />
+                 Condition="'$(EnableFrameworkPathOverride)' == 'true' AND Exists('$(_BSIPARoot)\Beat Saber_Data\Managed\netstandard.dll') AND ! $([System.String]::Copy('@(Reference)').Contains('netstandard'))" />
       <Reference Update="@(Reference)">
         <_BSIPAFile Condition="'%(Reference.HintPath)' != ''">$([System.IO.Path]::GetFileName('%(Reference.HintPath)'))</_BSIPAFile>
         <_BSIPAFile Condition="'%(Reference.HintPath)' == ''">%(Reference.Identity).dll</_BSIPAFile>
