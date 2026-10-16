@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <GameDirectory>D:\BSManager\BSInstances\1.45.2</GameDirectory>
+    <GameDirectory>D:\BSManager\BSInstances\1.45.3</GameDirectory>
     <ImportBSMTTargets>true</ImportBSMTTargets>
     <BSMTProjectType>BSIPA</BSMTProjectType>
     <GenerateManifest>false</GenerateManifest>
@@ -222,4 +222,5 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\BSIPA.Layout.targets" Condition="Exists('$(GameDirectory)\IPA\Data\Managed\IPA.Loader.dll') OR Exists('$(BeatSaberDir)\IPA\Data\Managed\IPA.Loader.dll')" />
 </Project>

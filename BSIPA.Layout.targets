@@ -1,0 +1,113 @@
+<Project>
+  <PropertyGroup>
+    <PluginFolderName>Mods</PluginFolderName>
+    <_BSIPARoot Condition="'$(GameDirectory)' != ''">$(GameDirectory)</_BSIPARoot>
+    <_BSIPARoot Condition="'$(_BSIPARoot)' == ''">$(BeatSaberDir)</_BSIPARoot>
+    <_BSIPALoader>$(_BSIPARoot)\IPA\Data\Managed</_BSIPALoader>
+    <_BSIPACoreLibraries>$(_BSIPARoot)\IPA\CoreLibraries</_BSIPACoreLibraries>
+    <_BSIPAMods>$(_BSIPARoot)\Mods</_BSIPAMods>
+    <_BSIPAPending>$(_BSIPARoot)\IPA\Pending</_BSIPAPending>
+    <EnableFrameworkPathOverride Condition="$([System.String]::Copy('$(TargetFramework)').StartsWith('net4'))">true</EnableFrameworkPathOverride>
+    <FrameworkPathOverride Condition="$([System.String]::Copy('$(TargetFramework)').StartsWith('net4'))">$(_BSIPARoot)\Beat Saber_Data\Managed</FrameworkPathOverride>
+    <_BSIPAModOutput>Mods</_BSIPAModOutput>
+    <_BSIPAModOutput Condition="'$(BeatSaberOutputType)' == 'Library' OR '$(AssemblyName)' == 'AssetComponents' OR '$(AssemblyName)' == 'SaberComponents' OR '$(AssemblyName)' == 'Reactive' OR '$(AssemblyName)' == 'Reactive.Components' OR '$(AssemblyName)' == 'BeatSaberPlaylistsLib' OR '$(AssemblyName)' == 'PPPredictor.Core'">Mods\Libraries</_BSIPAModOutput>
+    <ArtifactDestination>$(TargetDir)Artifact</ArtifactDestination>
+    <ArtifactDir>$(TargetDir)Artifact\</ArtifactDir>
+    <ArtifactTargetDir>$(ArtifactDir)$(_BSIPAModOutput)\</ArtifactTargetDir>
+    <DisableCopyToGame>true</DisableCopyToGame>
+    <DisableCopyToPlugins>true</DisableCopyToPlugins>
+    <EnableReleaseCopy>false</EnableReleaseCopy>
+    <CopyPDB>false</CopyPDB>
+    <GameVersion Condition="'$(GameVersion)' == ''">1.45.3</GameVersion>
+  </PropertyGroup>
+
+  <Target Name="BSIPA_LayoutRequiredFiles" BeforeTargets="BSMT_GenerateManifest;GenerateBSMLManifest;SetFullReleaseInfo;BeforeBuild">
+  <ItemGroup>
+    <_BSIPALegacyFile Include="@(RequiredFile)" Condition="$([System.String]::Copy('%(RequiredFile.Identity)').StartsWith('Libs/')) OR $([System.String]::Copy('%(RequiredFile.Identity)').StartsWith('Libs\')) OR $([System.String]::Copy('%(RequiredFile.Identity)').StartsWith('Plugins/')) OR $([System.String]::Copy('%(RequiredFile.Identity)').StartsWith('Plugins\'))" />
+    <RequiredFile Remove="@(_BSIPALegacyFile)" />
+    <RequiredFile Include="Mods/Libraries/%(_BSIPALegacyFile.Filename)%(_BSIPALegacyFile.Extension)" Condition="$([System.String]::Copy('%(_BSIPALegacyFile.Identity)').StartsWith('Libs'))" />
+    <RequiredFile Include="Mods/$([System.String]::Copy('%(_BSIPALegacyFile.Identity)').Substring(8))" Condition="$([System.String]::Copy('%(_BSIPALegacyFile.Identity)').StartsWith('Plugins'))" />
+  </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <_BSIPALayoutAssembly Include="$(_BSIPAMods)\**\*.dll;$(_BSIPAPending)\**\*.dll"
+                          Exclude="$(_BSIPAMods)\.compatibility\**;$(_BSIPAMods)\Libraries\Native\**;$(_BSIPAPending)\.installing\**;$(_BSIPAPending)\Libraries\Native\**" />
+    <_BSIPALayoutDirectory Include="@(_BSIPALayoutAssembly->'%(RootDir)%(Directory)')" KeepDuplicates="false" />
+  </ItemGroup>
+  <PropertyGroup>
+    <ReferencePath>$(_BSIPAPending);$(_BSIPAPending)\Core;$(_BSIPAPending)\Libraries;$(_BSIPALoader);$(_BSIPACoreLibraries);$(_BSIPAMods);$(_BSIPAMods)\Core;$(_BSIPAMods)\Libraries;@(_BSIPALayoutDirectory);$(ReferencePath)</ReferencePath>
+    <AssemblySearchPaths>{HintPathFromItem};$(_BSIPARoot)\Beat Saber_Data\Managed;$(ReferencePath);$(AssemblySearchPaths)</AssemblySearchPaths>
+  </PropertyGroup>
+
+  <Target Name="BSIPA_ResolveLayoutReferences" BeforeTargets="ResolveAssemblyReferences">
+    <PropertyGroup>
+      <DefineConstants Condition="'$(GameVersion)' == '1.45.3'">$(DefineConstants);BEAT_SABER_1453</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+      <Reference Update="@(Reference)">
+        <_BSIPAFile Condition="'%(Reference.HintPath)' != ''">$([System.IO.Path]::GetFileName('%(Reference.HintPath)'))</_BSIPAFile>
+        <_BSIPAFile Condition="'%(Reference.HintPath)' == ''">%(Reference.Identity).dll</_BSIPAFile>
+      </Reference>
+      <Reference Update="@(Reference)" Condition="Exists('$(_BSIPALoader)\%(Reference._BSIPAFile)')">
+        <HintPath>$(_BSIPALoader)\%(Reference._BSIPAFile)</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <Reference Update="@(Reference)" Condition="Exists('$(_BSIPACoreLibraries)\%(Reference._BSIPAFile)')">
+        <HintPath>$(_BSIPACoreLibraries)\%(Reference._BSIPAFile)</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <Reference Update="@(Reference)" Condition="Exists('$(_BSIPARoot)\Beat Saber_Data\Managed\%(Reference._BSIPAFile)')">
+        <HintPath>$(_BSIPARoot)\Beat Saber_Data\Managed\%(Reference._BSIPAFile)</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <Reference Update="@(Reference)" Condition="Exists('$(_BSIPAMods)\Libraries\%(Reference._BSIPAFile)')">
+        <HintPath>$(_BSIPAMods)\Libraries\%(Reference._BSIPAFile)</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <Reference Update="@(Reference)" Condition="Exists('$(_BSIPAMods)\%(Reference._BSIPAFile)')">
+        <HintPath>$(_BSIPAMods)\%(Reference._BSIPAFile)</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <Reference Update="@(Reference)" Condition="Exists('$(_BSIPAMods)\Core\%(Reference._BSIPAFile)')">
+        <HintPath>$(_BSIPAMods)\Core\%(Reference._BSIPAFile)</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <!-- Prefer staged dependencies so consumers compile against the same deployment. -->
+      <Reference Update="@(Reference)" Condition="Exists('$(_BSIPAPending)\Libraries\%(Reference._BSIPAFile)')">
+        <HintPath>$(_BSIPAPending)\Libraries\%(Reference._BSIPAFile)</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <Reference Update="@(Reference)" Condition="Exists('$(_BSIPAPending)\%(Reference._BSIPAFile)')">
+        <HintPath>$(_BSIPAPending)\%(Reference._BSIPAFile)</HintPath>
+        <Private>false</Private>
+      </Reference>
+      <Reference Update="@(Reference)" Condition="Exists('$(_BSIPAPending)\Core\%(Reference._BSIPAFile)')">
+        <HintPath>$(_BSIPAPending)\Core\%(Reference._BSIPAFile)</HintPath>
+        <Private>false</Private>
+      </Reference>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="BSIPA_LayoutOutputs" BeforeTargets="BSMT_SetOutputs;CopyToArtifactDestination" DependsOnTargets="BSMT_AfterBuild" Condition="'$(ImportBSMTTargets)' == 'True'">
+    <ItemGroup Condition="'@(OutputCopy)' == ''">
+      <OutputCopy Include="$(TargetPath)" OutputPath="$(_BSIPAModOutput)\$(TargetFileName)" />
+    </ItemGroup>
+    <ItemGroup>
+      <OutputCopy Update="@(OutputCopy)">
+        <OutputPath>$([System.String]::Copy('%(OutputCopy.OutputPath)').Replace('/', '\'))</OutputPath>
+      </OutputCopy>
+      <OutputCopy Update="@(OutputCopy)" Condition="$([System.String]::Copy('%(OutputCopy.OutputPath)').StartsWith('Plugins\'))">
+        <OutputPath>Mods\$([System.String]::Copy('%(OutputCopy.OutputPath)').Substring(8))</OutputPath>
+      </OutputCopy>
+      <OutputCopy Update="@(OutputCopy)" Condition="$([System.String]::Copy('%(OutputCopy.OutputPath)').StartsWith('Libs\'))">
+        <OutputPath>Mods\Libraries\%(OutputCopy.Filename)%(OutputCopy.Extension)</OutputPath>
+      </OutputCopy>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="BSIPA_CopyLayoutArtifact" AfterTargets="Build">
+    <MakeDir Directories="$(ArtifactTargetDir)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ArtifactTargetDir)" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).manifest" DestinationFolder="$(ArtifactTargetDir)" Condition="Exists('$(TargetDir)$(TargetName).manifest')" />
+  </Target>
+</Project>
