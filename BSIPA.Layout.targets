@@ -7,8 +7,8 @@
     <_BSIPACoreLibraries>$(_BSIPARoot)\IPA\CoreLibraries</_BSIPACoreLibraries>
     <_BSIPAMods>$(_BSIPARoot)\Mods</_BSIPAMods>
     <_BSIPAPending>$(_BSIPARoot)\IPA\Pending</_BSIPAPending>
-    <EnableFrameworkPathOverride Condition="$([System.String]::Copy('$(TargetFramework)').StartsWith('net4'))">true</EnableFrameworkPathOverride>
-    <FrameworkPathOverride Condition="$([System.String]::Copy('$(TargetFramework)').StartsWith('net4'))">$(_BSIPARoot)\Beat Saber_Data\Managed</FrameworkPathOverride>
+    <EnableFrameworkPathOverride Condition="$([System.String]::Copy('$(TargetFramework)').StartsWith('net4')) OR $([System.String]::Copy('$(TargetFrameworkVersion)').StartsWith('v4'))">true</EnableFrameworkPathOverride>
+    <FrameworkPathOverride Condition="$([System.String]::Copy('$(TargetFramework)').StartsWith('net4')) OR $([System.String]::Copy('$(TargetFrameworkVersion)').StartsWith('v4'))">$(_BSIPARoot)\Beat Saber_Data\Managed</FrameworkPathOverride>
     <_BSIPAModOutput>Mods</_BSIPAModOutput>
     <_BSIPAModOutput Condition="'$(BeatSaberOutputType)' == 'Library' OR '$(AssemblyName)' == 'AssetComponents' OR '$(AssemblyName)' == 'SaberComponents' OR '$(AssemblyName)' == 'Reactive' OR '$(AssemblyName)' == 'Reactive.Components' OR '$(AssemblyName)' == 'BeatSaberPlaylistsLib' OR '$(AssemblyName)' == 'PPPredictor.Core'">Mods\Libraries</_BSIPAModOutput>
     <ArtifactDestination>$(TargetDir)Artifact</ArtifactDestination>
@@ -24,8 +24,12 @@
   <Target Name="BSIPA_LayoutRequiredFiles" BeforeTargets="BSMT_GenerateManifest;GenerateBSMLManifest;SetFullReleaseInfo;BeforeBuild">
   <ItemGroup>
     <_BSIPALegacyFile Include="@(RequiredFile)" Condition="$([System.String]::Copy('%(RequiredFile.Identity)').StartsWith('Libs/')) OR $([System.String]::Copy('%(RequiredFile.Identity)').StartsWith('Libs\')) OR $([System.String]::Copy('%(RequiredFile.Identity)').StartsWith('Plugins/')) OR $([System.String]::Copy('%(RequiredFile.Identity)').StartsWith('Plugins\'))" />
+    <_BSIPALegacyFile Update="@(_BSIPALegacyFile)">
+      <_Native>$([System.Text.RegularExpressions.Regex]::IsMatch('%(_BSIPALegacyFile.Identity)', '^Libs[\\/](Native|Natives)[\\/]'))</_Native>
+    </_BSIPALegacyFile>
     <RequiredFile Remove="@(_BSIPALegacyFile)" />
-    <RequiredFile Include="Mods/Libraries/%(_BSIPALegacyFile.Filename)%(_BSIPALegacyFile.Extension)" Condition="$([System.String]::Copy('%(_BSIPALegacyFile.Identity)').StartsWith('Libs'))" />
+    <RequiredFile Include="Mods/Libraries/$([System.String]::Copy('%(_BSIPALegacyFile.Identity)').Substring(5))" Condition="'%(_BSIPALegacyFile._Native)' == 'True'" />
+    <RequiredFile Include="Mods/Libraries/%(_BSIPALegacyFile.Filename)%(_BSIPALegacyFile.Extension)" Condition="$([System.String]::Copy('%(_BSIPALegacyFile.Identity)').StartsWith('Libs')) AND '%(_BSIPALegacyFile._Native)' != 'True'" />
     <RequiredFile Include="Mods/$([System.String]::Copy('%(_BSIPALegacyFile.Identity)').Substring(8))" Condition="$([System.String]::Copy('%(_BSIPALegacyFile.Identity)').StartsWith('Plugins'))" />
   </ItemGroup>
   </Target>
@@ -41,6 +45,7 @@
 
   <Target Name="BSIPA_ResolveLayoutReferences" BeforeTargets="ResolveAssemblyReferences">
     <PropertyGroup>
+      <DefineConstants>$(DefineConstants);BSIPA_MODS</DefineConstants>
       <DefineConstants Condition="'$(GameVersion)' == '1.45.3'">$(DefineConstants);BEAT_SABER_1453</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
@@ -98,6 +103,9 @@
       </OutputCopy>
       <OutputCopy Update="@(OutputCopy)" Condition="$([System.String]::Copy('%(OutputCopy.OutputPath)').StartsWith('Plugins\'))">
         <OutputPath>Mods\$([System.String]::Copy('%(OutputCopy.OutputPath)').Substring(8))</OutputPath>
+      </OutputCopy>
+      <OutputCopy Update="@(OutputCopy)" Condition="$([System.String]::Copy('%(OutputCopy.OutputPath)').StartsWith('Libs\'))">
+        <OutputPath Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(OutputCopy.OutputPath)', '^Libs\\(Native|Natives)\\'))">Mods\Libraries\$([System.String]::Copy('%(OutputCopy.OutputPath)').Substring(5))</OutputPath>
       </OutputCopy>
       <OutputCopy Update="@(OutputCopy)" Condition="$([System.String]::Copy('%(OutputCopy.OutputPath)').StartsWith('Libs\'))">
         <OutputPath>Mods\Libraries\%(OutputCopy.Filename)%(OutputCopy.Extension)</OutputPath>
